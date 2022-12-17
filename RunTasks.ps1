@@ -68,7 +68,7 @@ function Show-MainMenu
         "9- CheckingServices`n" +
         "10- PutScriptInPath`n" +
         "11- CallingAPI`n" +
-        "12- `n" +
+        "12- ExportingZip`n" +
         "13- `n" | Write-Host
     
         $userInput = Read-Host
@@ -216,7 +216,7 @@ function Show-MainMenu
                 "are in the specified state or not. `n" +
                 "Give me the name of the service(s) (separated by comma): " | Write-Host
                 $allServices = Read-UserOptions
-                if (Get-IsNullOrEmpty -InputStrings $allJsonPaths)
+                if (Get-IsNullOrEmpty -InputStrings $allServices)
                 {
                     # make sure the the services name value isn't null or empty.
                     break
@@ -257,6 +257,32 @@ function Show-MainMenu
                 Invoke-TaskCallingAPI -UserName $theUsername -RepoName $repoName -PerPage $perPageLimit
             }
 
+            "12"
+            {
+                "This task will compress the given directories/files and compress them to a single " +
+                ".zip file.`n" +
+                "Give me the files/directories path that need to be compressed:" | Write-Host
+                $thePath = Read-UserOptions
+                if (Get-IsNullOrEmpty -InputStrings $thePath)
+                {
+                    # make sure the paths value aren't null or empty.
+                    break
+                }
+
+                Invoke-TaskExportingZip -Path $thePath -DestinationPath (`
+                    Read-Host -Prompt "Give me the destination path")
+            }
+
+            "13"
+            {
+                "This task will expand the given zip file and extract the content to "+
+                "the specified path. `n" +
+                "Give me the path to the zip file:" | Write-Host
+                $thePath = Read-Host
+
+                Invoke-TaskExpandingZip -Path $thePath -DestinationPath (`
+                    Read-Host -Prompt "Give me the destination path")
+            }
             Default {
                 "Thanks for taking time and testing out this script!" | Write-Host
                 return
