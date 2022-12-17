@@ -65,7 +65,7 @@ function Show-MainMenu
         "6- MakingFunctions`n"      +
         "7- ReadingJson`n"          +
         "8- MakingJson`n" +
-        "9- `n" +
+        "9- CheckingServices`n" +
         "10- `n" +
         "11- `n" +
         "12- `n" +
@@ -225,7 +225,10 @@ function Show-MainMenu
                 | Write-Host
                 $desiredState = Read-Host
 
-                Invoke-TaskCheckingService -ServiceName $allServices -DesiredState $desiredState
+                if (Invoke-TaskCheckingService -ServiceName $allServices -DesiredState $desiredState)
+                {
+                    "Yup! The services are all in the desired state!" | Write-Host
+                }
             }
 
             Default {
