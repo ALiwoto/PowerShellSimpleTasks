@@ -209,6 +209,24 @@ function Show-MainMenu
 
                 Invoke-TaskMakingJson -Path $allJsonPaths
             }
+            "9"
+            {
+                "This task will check if all of the services with the specified name " +
+                "are in the specified state or not. `n" +
+                "Give me the name of the service(s) (separated by comma): " | Write-Host
+                $allServices = Read-UserOptions
+                if (Get-IsNullOrEmpty -InputStrings $allJsonPaths)
+                {
+                    # make sure the the services name value isn't null or empty.
+                    break
+                }
+
+                "Now give me the desired state in which these services should be in"`
+                | Write-Host
+                $desiredState = Read-Host
+
+                Invoke-TaskCheckingService -ServiceName -DesiredState $desiredState
+            }
 
             Default {
                 "Thanks for taking time and testing out this script!" | Write-Host
