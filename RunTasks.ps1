@@ -66,8 +66,8 @@ function Show-MainMenu
         "7- ReadingJson`n"          +
         "8- MakingJson`n" +
         "9- CheckingServices`n" +
-        "10- `n" +
-        "11- `n" +
+        "10- PutScriptInPath`n" +
+        "11- CallingAPI`n" +
         "12- `n" +
         "13- `n" | Write-Host
     
@@ -238,9 +238,23 @@ function Show-MainMenu
                 "Give me the specified path value: " | Write-Output
 
                 $thePath = Read-Host
-                $shouldBeGlobal = ((Read-Host -Prompt "Should it become global? Y/N: ") -eq "y")
+                $shouldBeGlobal = ((Read-Host -Prompt "Should it become global? Y/N") -eq "y")
 
                 Invoke-TaskPutScriptInPath -Path $thePath -InGlobalEnv $shouldBeGlobal
+            }
+
+            "11"
+            {
+                "This task will call GitHub API and fetch issues of a repository from it.`n" +
+                "Give me the username/org name of the repo: " | Write-Host
+                $theUsername = Read-Host
+
+                
+                $repoName = Read-Host -Prompt "Now give me the repository name"
+
+                $perPageLimit = [int](Read-Host -Prompt "Now give the per_page limit")
+
+                Invoke-TaskCallingAPI -UserName $theUsername -RepoName $repoName -PerPage $perPageLimit
             }
 
             Default {
