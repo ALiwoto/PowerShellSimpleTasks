@@ -63,7 +63,7 @@ function Show-MainMenu
         "4- DirsCopying`n"     +
         "5- StopOrStartServices`n"     +
         "6- MakingFunctions`n" +
-        "7- `n" +
+        "7- ReadingJson`n" +
         "8- `n" +
         "9- `n" +
         "10- `n" +
@@ -189,7 +189,10 @@ function Show-MainMenu
 
             "7"
             {
+                "This task will read content of a json file and display its fields.`n" +
+                "Give me the path to the json file to read: " | Write-Host
 
+                Invoke-TaskReadingJson -Path (Read-Host)
             }
 
             Default {

@@ -3,8 +3,11 @@
 # This file is subject to the terms and conditions defined in
 # file 'LICENSE', which is part of the source code.
 
-function Invoke-TaskMakingFunctions 
+function Invoke-TaskReadingJson
 {
-    "This function has been called!" | Write-Output
+    param (
+        [string]$Path
+    )
+    
+    Get-Content -Path $Path -Raw | ConvertFrom-Json | Write-Output
 }
-
