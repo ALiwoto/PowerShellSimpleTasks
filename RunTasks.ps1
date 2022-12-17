@@ -95,7 +95,7 @@ function Show-MainMenu {
                 "copied (separated by comma): " | Write-Host
                 $allSourceFiles = Read-UserOptions
                 if (Get-IsNullOrEmpty -InputStrings $allSourceFiles) {
-                    # make sure the source files to delete paths isn't null or empty.
+                    # make sure the source files to copy's paths isn't null or empty.
                     break
                 }
 
@@ -106,10 +106,27 @@ function Show-MainMenu {
                     break
                 }
 
-                Invoke-TaskCopyingFiles -SourceFilesName $allSourceFiles -Destination $allDestinations
+                Invoke-TaskFilesCopying -SourceFilesName $allSourceFiles -Destination $allDestinations
             }
             "4" {
+                "This task will copy directories from the specified path(s) to all of the " +
+                "specified destinations.`n" +
+                "Please give me path of the directories you want to get "+
+                "copied (separated by comma): " | Write-Host
+                $allSourceDirs = Read-UserOptions
+                if (Get-IsNullOrEmpty -InputStrings $allSourceDirs) {
+                    # make sure the source dirs to copy's paths isn't null or empty.
+                    break
+                }
 
+                "Give me the destination path(s) (separated by comma):" | Write-Host
+                $allDestinations = Read-UserOptions
+                if (Get-IsNullOrEmpty -InputStrings $allDestinations) {
+                    # make sure the destination paths value isn't null or empty.
+                    break
+                }
+
+                Invoke-TaskDirsCopying -SourceFilesName $allSourceFiles -Destination $allDestinations
             }
             Default {
                 "Thanks for taking time and testing out this script!" | Write-Host
