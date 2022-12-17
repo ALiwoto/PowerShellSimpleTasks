@@ -57,14 +57,14 @@ function Show-MainMenu
     while ($true)
     {
         "`nPlease select which task you would like to run?" | Write-Host
-        "1- ServiceList`n"      +
-        "2- DirsAndSubDirs`n"   +
-        "3- FilesCopying`n"     +
-        "4- DirsCopying`n"     +
-        "5- StopOrStartServices`n"     +
-        "6- MakingFunctions`n" +
-        "7- ReadingJson`n" +
-        "8- `n" +
+        "1- ServiceList`n"          +
+        "2- DirsAndSubDirs`n"       +
+        "3- FilesCopying`n"         +
+        "4- DirsCopying`n"          +
+        "5- StopOrStartServices`n"  +
+        "6- MakingFunctions`n"      +
+        "7- ReadingJson`n"          +
+        "8- MakingJson`n" +
         "9- `n" +
         "10- `n" +
         "11- `n" +
@@ -193,6 +193,21 @@ function Show-MainMenu
                 "Give me the path to the json file to read: " | Write-Host
 
                 Invoke-TaskReadingJson -Path (Read-Host)
+            }
+            
+            "8"
+            {
+                "This task will save content of an object (a hashtable) to a json file.`n" +
+                "Give me the path to the specified json file(s) "+
+                "(Separated by comma): " | Write-Host
+                $allJsonPaths = Read-UserOptions
+                if (Get-IsNullOrEmpty -InputStrings $allJsonPaths)
+                {
+                    # make sure the destination paths value isn't null or empty.
+                    break
+                }
+
+                Invoke-TaskMakingJson -Path $allJsonPaths
             }
 
             Default {
