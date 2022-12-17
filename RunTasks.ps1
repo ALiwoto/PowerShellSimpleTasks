@@ -15,7 +15,7 @@
 # please do notice that (files with "*.Test.ps1" format are not dot-sourced).
 foreach ($currentDir in Get-ChildItem -Path ".\src\Tasks\" -Directory) {
     foreach ($currentFile in Get-ChildItem -Path $currentDir.PSPath -File) {
-        if ($currentFile.PSPath -like "*.Test.ps1") {
+        if (($currentFile.PSPath -notlike "*.ps1") -or ($currentFile.PSPath -like "*.Test.ps1")) {
             # prevent from dot-sourcing test files
             continue
         }
@@ -60,6 +60,6 @@ function Show-MainMenu {
             }
         }
     }
-}    
+}
 
 Show-MainMenu
