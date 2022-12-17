@@ -43,15 +43,16 @@ function Get-IsNullOrEmpty {
     return (($null -eq $InputStrings) -or ($InputStrings.Length -eq 0))
 }
 
-"Welcome to the PowerShellSimpleTask script!`n" +
+"Welcome to the PowerShellSimpleTasks script!`n" +
 "This script is designed to do some simple tasks"+
 " (shown in the below list) " | Write-Output
 
 function Show-MainMenu {
     while ($true) {
         "`nPlease select which task you would like to run?" | Write-Host
-        "1- ServiceList`n" +
-        "2- DirsAndSubDirs`n" | Write-Host
+        "1- ServiceList`n"      +
+        "2- DirsAndSubDirs`n"   +
+        "3- FilesCopying`n"     | Write-Host
     
         $userInput = Read-Host
         switch ($userInput) {
@@ -108,7 +109,7 @@ function Show-MainMenu {
                 Invoke-TaskCopyingFiles -SourceFilesName $allSourceFiles -Destination $allDestinations
             }
             "4" {
-                
+
             }
             Default {
                 "Thanks for taking time and testing out this script!" | Write-Host

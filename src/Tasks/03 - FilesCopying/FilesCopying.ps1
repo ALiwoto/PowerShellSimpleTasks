@@ -10,6 +10,6 @@ function Invoke-TaskCopyingFiles {
     )
     
     foreach ($currentDestination in $Destination) {
-        Copy-Item -Path $SourceFilesName -Destination $Destination -Force
+        Copy-Item -Path $SourceFilesName -Destination $currentDestination -Force
     }
 }
