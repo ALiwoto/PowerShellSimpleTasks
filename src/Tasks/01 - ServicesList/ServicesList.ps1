@@ -34,5 +34,3 @@ function Invoke-TaskServiceList
 
     return $allServices
 }
-
-Write-Output "hi"

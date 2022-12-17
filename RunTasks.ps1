@@ -62,7 +62,7 @@ function Show-MainMenu
         "3- FilesCopying`n"     +
         "4- DirsCopying`n"     +
         "5- StopOrStartServices`n"     +
-        "6- `n" +
+        "6- MakingFunctions`n" +
         "7- `n" +
         "8- `n" +
         "9- `n" +
@@ -74,7 +74,8 @@ function Show-MainMenu
         $userInput = Read-Host
         switch ($userInput) 
         {
-            "1" {
+            "1"
+            {
                 "This task will output a list of services, matching with the " +
                 "word(s) you have provided (provide an empty string to list all " +
                 "or separate them using comma `",`":" | Write-Host
@@ -85,7 +86,9 @@ function Show-MainMenu
     
                 Invoke-TaskServiceList -Name $serviceName -ServiceLimit $serviceLimit
             }
-            "2" {
+
+            "2"
+            {
                 "This task will create some sub-directories under the specified " +
                 "directories.`n" +
                 "Give me the name of parents directories " +
@@ -108,7 +111,9 @@ function Show-MainMenu
 
                 Invoke-TaskDirsAndSubDirs -ParentDirName $allParents -ChildrenDirName $allChildren
             }
-            "3" {
+
+            "3"
+            {
                 "This task will copy files from the specified path(s) to all of the " +
                 "specified destinations.`n" +
                 "Please give me path of the files/directories you want to get "+
@@ -130,7 +135,9 @@ function Show-MainMenu
 
                 Invoke-TaskFilesCopying -SourceFilesName $allSourceFiles -Destination $allDestinations
             }
-            "4" {
+
+            "4"
+            {
                 "This task will copy directories from the specified path(s) to all of the " +
                 "specified destinations.`n" +
                 "Please give me path of the directories you want to get "+
@@ -152,7 +159,9 @@ function Show-MainMenu
 
                 Invoke-TaskDirsCopying -SourceFilesName $allSourceFiles -Destination $allDestinations
             }
-            "5" {
+
+            "5"
+            {
                 "This task will stop or start the specified services.`n" +
                 "Give me the desired service name(s) (separated by comma): " | Write-Host
                 $servicesName = Read-UserOptions
@@ -172,6 +181,17 @@ function Show-MainMenu
 
                 Invoke-TaskStopOrStartService -ServiceName $servicesName -ActionStatus $serviceAction
             }
+
+            "6" 
+            {
+                Invoke-TaskMakingFunctions
+            }
+
+            "7"
+            {
+
+            }
+
             Default {
                 "Thanks for taking time and testing out this script!" | Write-Host
                 return
