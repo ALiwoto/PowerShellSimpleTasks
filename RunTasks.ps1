@@ -13,9 +13,12 @@
 # (with the format of "num - TaskName")
 # and dot-source all of the scripts in each task directory 
 # please do notice that (files with "*.Test.ps1" format are not dot-sourced).
-foreach ($currentDir in Get-ChildItem -Path ".\src\Tasks\" -Directory) {
-    foreach ($currentFile in Get-ChildItem -Path $currentDir.PSPath -File) {
-        if (($currentFile.PSPath -notlike "*.ps1") -or ($currentFile.PSPath -like "*.Test.ps1")) {
+foreach ($currentDir in Get-ChildItem -Path ".\src\Tasks\" -Directory)
+{
+    foreach ($currentFile in Get-ChildItem -Path $currentDir.PSPath -File)
+    {
+        if (($currentFile.PSPath -notlike "*.ps1") -or ($currentFile.PSPath -like "*.Test.ps1"))
+        {
             # prevent from dot-sourcing test files
             continue
         }
@@ -29,13 +32,15 @@ foreach ($currentDir in Get-ChildItem -Path ".\src\Tasks\" -Directory) {
 
 # Reads and returns the options provided by the user (from console)
 # as an array of strings separated by comma and/or whitespace.
-function Read-UserOptions {
+function Read-UserOptions
+{
     return ((Read-Host) -split "[, ]" | Where-Object {$_.Trim().Length -ne 0 } )
 }
 
 # Returns true if and only if at least one of the provided InputStrings
 # parameter is null.
-function Get-IsNullOrEmpty {
+function Get-IsNullOrEmpty
+{
     param (
         [string[]]$InputStrings
     )
@@ -47,15 +52,28 @@ function Get-IsNullOrEmpty {
 "This script is designed to do some simple tasks"+
 " (shown in the below list) " | Write-Output
 
-function Show-MainMenu {
-    while ($true) {
+function Show-MainMenu
+{
+    while ($true)
+    {
         "`nPlease select which task you would like to run?" | Write-Host
         "1- ServiceList`n"      +
         "2- DirsAndSubDirs`n"   +
-        "3- FilesCopying`n"     | Write-Host
+        "3- FilesCopying`n"     +
+        "4- DirsCopying`n"     +
+        "5- StopOrStartServices`n"     +
+        "6- `n" +
+        "7- `n" +
+        "8- `n" +
+        "9- `n" +
+        "10- `n" +
+        "11- `n" +
+        "12- `n" +
+        "13- `n" | Write-Host
     
         $userInput = Read-Host
-        switch ($userInput) {
+        switch ($userInput) 
+        {
             "1" {
                 "This task will output a list of services, matching with the " +
                 "word(s) you have provided (provide an empty string to list all " +
@@ -73,7 +91,8 @@ function Show-MainMenu {
                 "Give me the name of parents directories " +
                 "(separated by comma): " | Write-Host
                 $allParents = Read-UserOptions
-                if (Get-IsNullOrEmpty -InputStrings $allParents) {
+                if (Get-IsNullOrEmpty -InputStrings $allParents)
+                {
                     # make sure parent directories are not null or empty.
                     break
                 }
@@ -81,7 +100,8 @@ function Show-MainMenu {
                 "Give me the name of children directories " +
                 "(separated by comma): " | Write-Host
                 $allChildren = Read-UserOptions
-                if (Get-IsNullOrEmpty -InputStrings $allChildren) {
+                if (Get-IsNullOrEmpty -InputStrings $allChildren)
+                {
                     # make sure children sub-directories are not null or empty.
                     break
                 }
@@ -94,14 +114,16 @@ function Show-MainMenu {
                 "Please give me path of the files/directories you want to get "+
                 "copied (separated by comma): " | Write-Host
                 $allSourceFiles = Read-UserOptions
-                if (Get-IsNullOrEmpty -InputStrings $allSourceFiles) {
+                if (Get-IsNullOrEmpty -InputStrings $allSourceFiles)
+                {
                     # make sure the source files to copy's paths isn't null or empty.
                     break
                 }
 
                 "Give me the destination path(s) (separated by comma):" | Write-Host
                 $allDestinations = Read-UserOptions
-                if (Get-IsNullOrEmpty -InputStrings $allDestinations) {
+                if (Get-IsNullOrEmpty -InputStrings $allDestinations)
+                {
                     # make sure the destination paths value isn't null or empty.
                     break
                 }
@@ -114,19 +136,41 @@ function Show-MainMenu {
                 "Please give me path of the directories you want to get "+
                 "copied (separated by comma): " | Write-Host
                 $allSourceDirs = Read-UserOptions
-                if (Get-IsNullOrEmpty -InputStrings $allSourceDirs) {
+                if (Get-IsNullOrEmpty -InputStrings $allSourceDirs)
+                {
                     # make sure the source dirs to copy's paths isn't null or empty.
                     break
                 }
 
-                "Give me the destination path(s) (separated by comma):" | Write-Host
+                "Give me the destination path(s) (separated by comma): " | Write-Host
                 $allDestinations = Read-UserOptions
-                if (Get-IsNullOrEmpty -InputStrings $allDestinations) {
+                if (Get-IsNullOrEmpty -InputStrings $allDestinations)
+                {
                     # make sure the destination paths value isn't null or empty.
                     break
                 }
 
                 Invoke-TaskDirsCopying -SourceFilesName $allSourceFiles -Destination $allDestinations
+            }
+            "5" {
+                "This task will stop or start the specified services.`n" +
+                "Give me the desired service name(s) (separated by comma): " | Write-Host
+                $servicesName = Read-UserOptions
+                if (Get-IsNullOrEmpty -InputStrings $servicesName)
+                {
+                    # make sure the source dirs to copy's paths isn't null or empty.
+                    break
+                }
+
+                $serviceAction = ""
+                while ((($serviceAction -ne "start") -or ($serviceAction -ne "stop")))
+                {
+                    "Give me the action to do with the specified service(s) " +
+                    "(stop/start only):" | Write-Host
+                    $serviceAction = Read-Host
+                }
+
+                Invoke-TaskStopOrStartService -ServiceName $servicesName -ActionStatus $serviceAction
             }
             Default {
                 "Thanks for taking time and testing out this script!" | Write-Host
