@@ -225,7 +225,7 @@ function Show-MainMenu
                 | Write-Host
                 $desiredState = Read-Host
 
-                Invoke-TaskCheckingService -ServiceName -DesiredState $desiredState
+                Invoke-TaskCheckingService -ServiceName $allServices -DesiredState $desiredState
             }
 
             Default {
