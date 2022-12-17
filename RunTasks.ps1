@@ -33,6 +33,16 @@ function Read-UserOptions {
     return ((Read-Host) -split "[, ]" | Where-Object {$_.Trim().Length -ne 0 } )
 }
 
+# Returns true if and only if at least one of the provided InputStrings
+# parameter is null.
+function Get-IsNullOrEmpty {
+    param (
+        [string[]]$InputStrings
+    )
+    
+    return (($null -eq $InputStrings) -or ($InputStrings.Length -eq 0))
+}
+
 "Welcome to the PowerShellSimpleTask script!`n" +
 "This script is designed to do some simple tasks"+
 " (shown in the below list) " | Write-Output
@@ -62,7 +72,7 @@ function Show-MainMenu {
                 "Give me the name of parents directories " +
                 "(separated by comma): " | Write-Host
                 $allParents = Read-UserOptions
-                if (($null -eq $allParents) -or ($allParents.Length -eq 0)) {
+                if (Get-IsNullOrEmpty -InputStrings $allParents) {
                     # make sure parent directories are not null or empty.
                     break
                 }
@@ -70,7 +80,7 @@ function Show-MainMenu {
                 "Give me the name of children directories " +
                 "(separated by comma): " | Write-Host
                 $allChildren = Read-UserOptions
-                if (($null -eq $allChildren) -or ($allChildren.Length -eq 0)) {
+                if (Get-IsNullOrEmpty -InputStrings $allChildren) {
                     # make sure children sub-directories are not null or empty.
                     break
                 }
@@ -78,6 +88,26 @@ function Show-MainMenu {
                 Invoke-TaskDirsAndSubDirs -ParentDirName $allParents -ChildrenDirName $allChildren
             }
             "3" {
+                "This task will copy files from the specified path(s) to all of the " +
+                "specified destinations.`n" +
+                "Please give me path of the files/directories you want to get "+
+                "copied (separated by comma): " | Write-Host
+                $allSourceFiles = Read-UserOptions
+                if (Get-IsNullOrEmpty -InputStrings $allSourceFiles) {
+                    # make sure the source files to delete paths isn't null or empty.
+                    break
+                }
+
+                "Give me the destination path(s) (separated by comma):" | Write-Host
+                $allDestinations = Read-UserOptions
+                if (Get-IsNullOrEmpty -InputStrings $allDestinations) {
+                    # make sure the destination paths value isn't null or empty.
+                    break
+                }
+
+                Invoke-TaskCopyingFiles -SourceFilesName $allSourceFiles -Destination $allDestinations
+            }
+            "4" {
                 
             }
             Default {
