@@ -209,6 +209,7 @@ function Show-MainMenu
 
                 Invoke-TaskMakingJson -Path $allJsonPaths
             }
+
             "9"
             {
                 "This task will check if all of the services with the specified name " +
@@ -229,6 +230,17 @@ function Show-MainMenu
                 {
                     "Yup! The services are all in the desired state!" | Write-Host
                 }
+            }
+
+            "10"
+            {
+                "This task will put a script path to the PATH environment variable.`n" +
+                "Give me the specified path value: " | Write-Output
+
+                $thePath = Read-Host
+                $shouldBeGlobal = ((Read-Host -Prompt "Should it become global? Y/N: ") -eq "y")
+
+                Invoke-TaskPutScriptInPath -Path $thePath -InGlobalEnv $shouldBeGlobal
             }
 
             Default {
