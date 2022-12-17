@@ -3,7 +3,7 @@
 # This file is subject to the terms and conditions defined in
 # file 'LICENSE', which is part of the source code.
 
-# This is the entry point for PowerShellSImpleTasks projects.
+# This is the entry point for PowerShellSimpleTasks projects.
 # If you want to bring up a user interface (UI) for the whole tasks,
 # then you are in the correct place.
 # To see the source code of each task (the scripts' source code), you have
