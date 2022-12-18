@@ -69,7 +69,7 @@ function Show-MainMenu
         "10- PutScriptInPath`n" +
         "11- CallingAPI`n" +
         "12- ExportingZip`n" +
-        "13- `n" | Write-Host
+        "13- ExpandingZip`n" | Write-Host
     
         $userInput = Read-Host
         switch ($userInput) 
