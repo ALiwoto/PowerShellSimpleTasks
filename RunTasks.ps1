@@ -23,6 +23,10 @@ foreach ($currentDir in Get-ChildItem -Path ".\src\Tasks\" -Directory)
             continue
         }
         
+        # NOTE: In PowerShell 7+ it's possible to dot-source only $currentFile variable
+        # (without explicity mentioning .PSPath property at all), but we will be getting
+        # error in PowerShell 5.1, so we better use .PSPath so the script be compatible with
+        # 5.1 version.
         "Importing script file $($currentFile.PSPath) using dot-source" | Write-Debug
         . $currentFile.PSPath
     }
@@ -64,12 +68,12 @@ function Show-MainMenu
         "5- StopOrStartServices`n"  +
         "6- MakingFunctions`n"      +
         "7- ReadingJson`n"          +
-        "8- MakingJson`n" +
-        "9- CheckingServices`n" +
-        "10- PutScriptInPath`n" +
-        "11- CallingAPI`n" +
-        "12- ExportingZip`n" +
-        "13- ExpandingZip`n" | Write-Host
+        "8- MakingJson`n"           +
+        "9- CheckingServices`n"     +
+        "10- PutScriptInPath`n"     +
+        "11- CallingAPI`n"          +
+        "12- ExportingZip`n"        +
+        "13- ExpandingZip`n"        | Write-Host
     
         $userInput = Read-Host
         switch ($userInput) 
@@ -78,7 +82,7 @@ function Show-MainMenu
             {
                 "This task will output a list of services, matching with the " +
                 "word(s) you have provided (provide an empty string to list all " +
-                "or separate them using comma `",`":" | Write-Host
+                "or separate them using comma `",`"):" | Write-Host
                 $serviceName = Read-UserOptions
                 
                 "Would you also like to apply a limit to list of services?" | Write-Host
@@ -222,13 +226,24 @@ function Show-MainMenu
                     break
                 }
 
-                "Now give me the desired state in which these services should be in"`
+                "Now give me the desired state in which these services should be in: "`
                 | Write-Host
                 $desiredState = Read-Host
 
                 if (Invoke-TaskCheckingService -ServiceName $allServices -DesiredState $desiredState)
                 {
                     "Yup! The services are all in the desired state!" | Write-Host
+                }
+                else
+                {
+                    $userResponse = Read-Host -Prompt ("Sadly not all services are in the desired state...`n" +
+                    "Would you like to receive a list of these services alongside of their status? (Y/N)")
+                    if ($userResponse -ne "y")
+                    {
+                        break
+                    }
+
+                    Invoke-TaskServiceList -Name $serviceName
                 }
             }
 

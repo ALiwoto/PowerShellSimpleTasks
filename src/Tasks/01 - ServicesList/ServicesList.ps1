@@ -26,11 +26,8 @@ function Invoke-TaskServiceList
         # Select-Object returns a PSCustom instance which.. will get displayed
         # really badly when it gets printed to the console.
         # We used Format-Table here to make sure the data gets pretty-printed.
-        return (
-            $allServices | Select-Object -First $ServiceLimit |`
-            Format-Table @("Name", "Status", "StartType")
-        )
+        $allServices | Select-Object -First $ServiceLimit
     }
 
-    return $allServices
+    return $allServices | Format-Table @("Name", "Status", "StartType")
 }

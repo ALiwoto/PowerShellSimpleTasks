@@ -9,5 +9,9 @@ function Invoke-TaskReadingJson
         [string]$Path
     )
     
+    # Using -Raw switch paremeter here both increases performance and prevents
+    # possible bugs and unpredictable behaviour of ConvertFrom-Json cmdlet.
+    # For more information, please visit:
+    # https://github.com/PowerShell/PowerShell/issues/12229#issuecomment-873128946
     Get-Content -Path $Path -Raw | ConvertFrom-Json | Write-Output
 }
