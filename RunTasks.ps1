@@ -23,8 +23,8 @@ foreach ($currentDir in Get-ChildItem -Path ".\src\Tasks\" -Directory)
             continue
         }
         
-        "Importing script file $currentFile using dot-source" | Write-Debug
-        . $currentFile
+        "Importing script file $($currentFile.PSPath) using dot-source" | Write-Debug
+        . $currentFile.PSPath
     }
 
     Write-Debug $currentDir

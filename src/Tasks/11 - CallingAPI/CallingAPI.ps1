@@ -18,7 +18,7 @@ function Invoke-TaskCallingAPI
     $uri = "https://api.github.com/repos/$UserName/$RepoName/issues"
     while ($uri)
     {
-        $response = Invoke-WebRequest -Uri $uri -Body $body
+        $response = Invoke-WebRequest -Uri $uri -Body $body -UseBasicParsing
         $response.Content | ConvertFrom-Json | Write-Output
 
         $uri = $null
